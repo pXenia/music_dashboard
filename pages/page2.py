@@ -46,6 +46,13 @@ layout = dbc.Container([
                 }),
                 html.Div([
                     html.Table([
+                        html.Thead([
+                        html.Tr([
+                            html.Th("Ранг", style={'color': 'white', 'padding': '12px 8px'}),
+                            html.Th("Исполнитель", style={'color': 'white', 'padding': '12px 8px'}),
+                            html.Th("Треков", style={'color': 'white', 'padding': '12px 8px'})
+                        ])
+                    ]),
                         html.Tbody([
                             html.Tr([
                                 html.Td(f"{artist['rank']}.", style={
@@ -85,7 +92,7 @@ layout = dbc.Container([
             # Чарт "Топ треков"
             html.Div([
                 html.H4("Топ треков", style={
-                    'textAlign': 'Left',
+                    'textAlign': 'center',
                     'color': 'white',
                     'marginBottom': '20px',
                     'fontWeight': 'bold'
@@ -125,52 +132,62 @@ layout = dbc.Container([
         ], width=5),  # 43% ширины
 
         # Правый столбец (57%) - Карта
-        dbc.Col([
-            html.Div([
-                html.H4("Популярные исполнители на карте мира", style={
-                    'textAlign': 'center',
-                    'color': 'white',
-                    'marginBottom': '20px',
-                    'fontWeight': 'bold'
-                }),
-                dcc.Graph(
-                    id='world-map',
-                    figure=px.choropleth(
-                        country_artist_counts,
-                        locations='country',
-                        locationmode='country names',
-                        color='artist_count',
-                        hover_name='country',
-                        hover_data={'artist_count': True, 'country': False},
-                        color_continuous_scale='YlOrRd',
-                        labels={'artist_count': 'Кол-во исполнителей'},
-                        projection='natural earth'
-                    ).update_layout(
-                        plot_bgcolor='rgba(0,0,0,0)',
-                        paper_bgcolor='rgba(0,0,0,0)',
-                        font_color='white',
-                        margin=dict(l=0, r=0, t=0, b=0),
-                        coloraxis_colorbar=dict(
-                            title='Кол-во',
-                            x=0.02,
-                            y=0.15,
-                            len=0.7
-                        ),
-                        geo=dict(
-                            bgcolor='rgba(0,0,0,0)',
-                            lakecolor='#D2F2EF',
-                            landcolor='#242424',
-                            subunitcolor='grey'
-                        )
-                    )
+dbc.Col([
+    html.Div([
+        html.H4("Популярные исполнители на карте мира", style={
+            'textAlign': 'center',
+            'color': 'white',
+            'marginBottom': '20px',
+            'fontWeight': 'bold'
+        }),
+        dcc.Graph(
+            id='world-map',
+            figure=px.choropleth(
+                country_artist_counts,
+                locations='country',
+                locationmode='country names',
+                color='artist_count',
+                hover_name='country',
+                color_continuous_scale='YlOrRd',
+                labels={'artist_count': 'Кол-во'},
+                projection='natural earth'
+            ).update_layout(
+                plot_bgcolor='rgba(0,0,0,0)',
+                paper_bgcolor='rgba(0,0,0,0)',
+                font_color='white',
+                margin=dict(l=0, r=0, t=0, b=60),  # Увеличили нижний отступ для шкалы
+                coloraxis_colorbar=dict(
+                    title='Кол-во',
+                    title_font=dict(color='white'),
+                    tickfont=dict(color='white'),
+                    x=0.01,
+                    y=-0.4,  # Позиция шкалы (0-1, где 0 - низ)
+                    len=0.7,  # Длина шкалы
+                    thickness=15,
+                    yanchor='bottom'  # Привязка к низу
+                ),
+                geo=dict(
+                    bgcolor='rgba(0,0,0,0)',
+                    lakecolor='#D2F2EF',
+                    landcolor='#242424',
+                    subunitcolor='grey',
+                    center=dict(lon=0, lat=0),  # Центр карты
+                    projection_scale=1  # Масштаб карты
                 )
-            ], style={
-                'backgroundColor': '#242424',
-                'borderRadius': '15px',
-                'padding': '20px',
-                'height': '100%'
-            })
-        ], width=7)  # 57% ширины
+            ),
+            style={
+                'margin': '0 auto',
+                'height': '70vh',
+                'paddingBottom': '40px'  # Дополнительный отступ снизу
+            }
+        )
+    ], style={
+        'backgroundColor': '#242424',
+        'borderRadius': '15px',
+        'padding': '20px',
+        'height': '100%'
+    })
+], width=7)
     ], style={'marginTop': '20px'})
 ], fluid=True, style={
     'padding': '20px',
@@ -195,32 +212,35 @@ def update_map(selected_countries):
 
     # Создаем обновленную карту
     fig = px.choropleth(
-        country_counts,
-        locations='country',
-        locationmode='country names',
-        color='artist_count',
-        hover_name='country',
-        hover_data={'artist_count': True, 'country': False},
-        color_continuous_scale='YlOrRd',
-        labels={'artist_count': 'Кол-во исполнителей'},
-        projection='natural earth'
-    ).update_layout(
-        plot_bgcolor='rgba(0,0,0,0)',
-        paper_bgcolor='rgba(0,0,0,0)',
-        font_color='white',
-        margin=dict(l=0, r=0, t=0, b=0),
-        coloraxis_colorbar=dict(
-            title='Кол-во',
-            x=0.02,
-            y=0.15,
-            len=0.7
-        ),
-        geo=dict(
-            bgcolor='rgba(0,0,0,0)',
-            lakecolor='#D2F2EF',
-            landcolor='#242424',
-            subunitcolor='grey'
-        )
+    country_counts,
+    locations='country',
+    locationmode='country names',
+    color='artist_count',
+    hover_name='country',
+    hover_data={'artist_count': True, 'country': False},
+    color_continuous_scale='YlOrRd',
+    labels={'artist_count': 'Количество исполнителей'},
+    projection='natural earth'
+).update_layout(
+    plot_bgcolor='rgba(0,0,0,0)',
+    paper_bgcolor='rgba(0,0,0,0)',
+    font_color='white',
+    margin=dict(l=0, r=0, t=0, b=0),
+    coloraxis_colorbar=dict(
+        title='Количество исполнителей',  # Более описательное название
+        x=0.02,
+        y=0.15,
+        len=0.7,
+        thickness=15,
+        tickfont=dict(color='white'),
+        titlefont=dict(color='white')
+    ),
+    geo=dict(
+        bgcolor='rgba(0,0,0,0)',
+        lakecolor='#D2F2EF',
+        landcolor='#242424',
+        subunitcolor='grey'
     )
+)
 
     return fig

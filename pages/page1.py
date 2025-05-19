@@ -32,7 +32,6 @@ def categorize_tempo(tempo):
 
 layout = dbc.Container([
 
-
     # Фильтры
     html.Div(
         dbc.Row([
@@ -47,7 +46,7 @@ layout = dbc.Container([
                     style={
                         'backgroundColor': '#595959',
                         'borderRadius': '20px',
-                        'color': 'white',
+                        'color': 'black',
                         'fontSize': '16px'
                     }
                 )
@@ -93,7 +92,7 @@ layout = dbc.Container([
                 style={
                     'borderRadius': '45px',
                     'backgroundColor': '#242424',
-                    'padding': '25px'
+                    'padding': '40px'
                 }
             )
         ], width=3),
@@ -101,24 +100,78 @@ layout = dbc.Container([
         # Правая колонка с карточками
         dbc.Col(
             html.Div([
+                # Карточка "Самый короткий трек"
                 html.Div([
-                    html.H5("Самый короткий трек:", style={'textAlign': 'center', 'color': 'white'}),
-                    html.H3(id='shortest-track', style={'textAlign': 'center', 'fontWeight': 'bold', 'color': 'white'})
-                ], style={'padding': '15px', 'marginBottom': '20px', 'height': '20vh'}),
+                    html.Div("Самый короткий трек", style={
+                        'textAlign': 'left',
+                        'color': 'white',
+                        'fontSize': '16px',
+                        'marginBottom': '8px'
+                    }),
+                    html.Div(id='shortest-track', style={
+                        'textAlign': 'left',
+                        'color': 'white',
+                        'fontWeight': 'bold',
+                        'fontSize': '24px'
+                    })
+                ], style={
+                    'padding': '20px',
+                    'marginBottom': '20px',
+                    'height': '20vh',
+                    'display': 'flex',
+                    'flexDirection': 'column',
+                    'justifyContent': 'center'
+                }),
 
+                # Карточка "Средняя продолжительность трека"
                 html.Div([
-                    html.H5("Средняя продолжительность трека:", style={'textAlign': 'center', 'color': 'white'}),
-                    html.H3(id='avg-track', style={'textAlign': 'center', 'fontWeight': 'bold', 'color': 'white'})
-                ], style={'padding': '15px', 'marginBottom': '20px', 'height': '20vh'}),
+                    html.Div("Средняя продолжительность трека", style={
+                        'textAlign': 'left',
+                        'color': 'white',
+                        'fontSize': '16px',
+                        'marginBottom': '8px'
+                    }),
+                    html.Div(id='avg-track', style={
+                        'textAlign': 'left',
+                        'color': 'white',
+                        'fontWeight': 'bold',
+                        'fontSize': '24px'
+                    })
+                ], style={
+                    'padding': '20px',
+                    'marginBottom': '20px',
+                    'height': '20vh',
+                    'display': 'flex',
+                    'flexDirection': 'column',
+                    'justifyContent': 'center'
+                }),
 
+                # Карточка "Самый длинный трек"
                 html.Div([
-                    html.H5("Самый длинный трек:", style={'textAlign': 'center', 'color': 'white'}),
-                    html.H3(id='longest-track', style={'textAlign': 'center', 'fontWeight': 'bold', 'color': 'white'})
-                ], style={'padding': '15px', 'height': '20vh'})
+                    html.Div("Самый длинный трек", style={
+                        'textAlign': 'left',
+                        'color': 'white',
+                        'fontSize': '16px',
+                        'marginBottom': '8px'
+                    }),
+                    html.Div(id='longest-track', style={
+                        'textAlign': 'left',
+                        'color': 'white',
+                        'fontWeight': 'bold',
+                        'fontSize': '24px'
+                    })
+                ], style={
+                    'padding': '20px',
+                    'height': '20vh',
+                    'display': 'flex',
+                    'flexDirection': 'column',
+                    'justifyContent': 'center'
+                })
             ], style={
                 'borderRadius': '45px',
                 'backgroundColor': '#242424',
-                'padding': '25px'
+                'padding': '55px',
+                'width': '100%'
             }),
             width=3
         )
@@ -159,7 +212,15 @@ def update_all_charts(selected_countries):
         paper_bgcolor='rgba(0,0,0,0)',
         font_color='white',
         title_font_color='white',
-        showlegend=False,
+        showlegend=True,  # Включить легенду
+        legend=dict(
+            orientation="h",
+            yanchor="bottom",
+            y=1.02,
+            xanchor="right",
+            x=1,
+            font=dict(color='white')
+        ),
         margin=dict(l=20, r=20, t=50, b=20),
         yaxis_title="Средняя популярность",
         xaxis_title="Жанр"
@@ -188,8 +249,19 @@ def update_all_charts(selected_countries):
         plot_bgcolor='rgba(0,0,0,0)',
         paper_bgcolor='rgba(0,0,0,0)',
         font_color='white',
-        margin=dict(l=20, r=20, t=50, b=20),
-        height=300
+        margin=dict(l=50, r=50, t=50, b=80),  # Увеличиваем отступы
+        height=300,
+        annotations=[
+            dict(
+                x=0.5,
+                y=-0.2,  # Позиционируем текст под индикатором
+                xref='paper',
+                yref='paper',
+                text="Доля треков без мата",
+                showarrow=False,
+                font=dict(size=14, color='white')
+            )
+        ]
     )
 
     # График 3: Распределение темпов
@@ -206,15 +278,33 @@ def update_all_charts(selected_countries):
         hole=0.5,
         color_discrete_sequence=['#64BDC6', '#D9B4A6', '#C3DAA7']
     )
+    # В функции update_all_charts в page1.py измените код для donut_fig:
+
     donut_fig.update_layout(
         plot_bgcolor='rgba(0,0,0,0)',
         paper_bgcolor='rgba(0,0,0,0)',
         font_color='white',
         title_font_color='white',
-        showlegend=False,
-        margin=dict(l=20, r=20, t=50, b=20),
+        showlegend=True,
+        legend=dict(
+            orientation="h",  # Горизонтальная ориентация
+            yanchor="top",  # Якорь вверху
+            y=-0.1,  # Сдвигаем легенду ниже (отрицательное значение)
+            xanchor="center",  # Центрируем по горизонтали
+            x=0.5,
+            font=dict(color='white'),
+            bgcolor='rgba(0,0,0,0)',  # Прозрачный фон легенды
+            bordercolor='rgba(0,0,0,0)'  # Прозрачная граница
+        ),
+        margin=dict(l=20, r=20, t=30, b=100),  # Увеличиваем нижний отступ для легенды
         uniformtext_minsize=12,
         uniformtext_mode='hide'
+    )
+
+    # Также можно добавить прозрачность для секторов диаграммы:
+    donut_fig.update_traces(
+        marker=dict(line=dict(color='#242424', width=2)),
+        opacity=0.9  # Небольшая прозрачность
     )
 
     # Карточки с длительностью треков
