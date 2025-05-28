@@ -65,41 +65,66 @@ layout = dbc.Container([
     dbc.Row([
         # Левый график (жанры по популярности)
         dbc.Col(
-            html.Div(
-                dcc.Graph(id='genre-popularity-chart', style={'height': '70vh'}),
+            html.Div([
+                html.H4("Популярность жанров", style={
+                    'textAlign': 'center',
+                    'color': 'white',
+                    'marginBottom': '20px',
+                    'fontWeight': 'bold'
+                }),
+                dcc.Graph(id='genre-popularity-chart', style={'height': '70vh'})
+            ],
                 style={
                     'borderRadius': '45px',
                     'backgroundColor': '#242424',
                     'padding': '25px'
-                }
-            ),
+                }),
             width=6
         ),
 
         # Центральная колонка с графиками
         dbc.Col([
-            html.Div(
-                dcc.Graph(id='explicit-progress', style={'height': '30vh'}),
+            html.Div([
+                html.H4("Доля треков с explicit-контентом", style={
+                    'textAlign': 'center',
+                    'color': 'white',
+                    'marginBottom': '20px',
+                    'fontWeight': 'bold'
+                }),
+                dcc.Graph(id='explicit-progress', style={'height': '30vh'})
+            ],
                 style={
                     'borderRadius': '45px',
                     'backgroundColor': '#242424',
                     'padding': '25px',
                     'marginBottom': '20px'
-                }
-            ),
-            html.Div(
-                dcc.Graph(id='tempo-distribution-chart', style={'height': '30vh'}),
+                }),
+
+            html.Div([
+                html.H4("Распределение темпа треков", style={
+                    'textAlign': 'center',
+                    'color': 'white',
+                    'marginBottom': '20px',
+                    'fontWeight': 'bold'
+                }),
+                dcc.Graph(id='tempo-distribution-chart', style={'height': '30vh'})
+            ],
                 style={
                     'borderRadius': '45px',
                     'backgroundColor': '#242424',
-                    'padding': '40px'
-                }
-            )
+                    'padding': '25px'
+                })
         ], width=3),
 
         # Правая колонка с карточками
         dbc.Col(
             html.Div([
+                html.H4("Метрики треков", style={
+                    'textAlign': 'center',
+                    'color': 'white',
+                    'marginBottom': '20px',
+                    'fontWeight': 'bold'
+                }),
                 # Карточка "Самый короткий трек"
                 html.Div([
                     html.Div("Самый короткий трек", style={
@@ -170,7 +195,7 @@ layout = dbc.Container([
             ], style={
                 'borderRadius': '45px',
                 'backgroundColor': '#242424',
-                'padding': '55px',
+                'padding': '25px',
                 'width': '100%'
             }),
             width=3
@@ -182,7 +207,6 @@ layout = dbc.Container([
     'fontFamily': 'Inter',
     'minHeight': '100vh'
 })
-
 
 @callback(
     [Output('genre-popularity-chart', 'figure'),
@@ -249,15 +273,16 @@ def update_all_charts(selected_countries):
         plot_bgcolor='rgba(0,0,0,0)',
         paper_bgcolor='rgba(0,0,0,0)',
         font_color='white',
-        margin=dict(l=50, r=50, t=50, b=80),  # Увеличиваем отступы
-        height=300,
+        margin=dict(l=50, r=50, t=10, b=10),  # Увеличиваем отступы
+        height=200,
+        showlegend=False,
         annotations=[
             dict(
                 x=0.5,
                 y=-0.2,  # Позиционируем текст под индикатором
                 xref='paper',
                 yref='paper',
-                text="Доля треков без мата",
+                text="",
                 showarrow=False,
                 font=dict(size=14, color='white')
             )
@@ -296,7 +321,7 @@ def update_all_charts(selected_countries):
             bgcolor='rgba(0,0,0,0)',  # Прозрачный фон легенды
             bordercolor='rgba(0,0,0,0)'  # Прозрачная граница
         ),
-        margin=dict(l=20, r=20, t=30, b=100),  # Увеличиваем нижний отступ для легенды
+        margin=dict(l=20, r=20, t=30, b=20),  # Увеличиваем нижний отступ для легенды
         uniformtext_minsize=12,
         uniformtext_mode='hide'
     )
