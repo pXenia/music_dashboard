@@ -5,11 +5,11 @@ import pandas as pd
 import pandas as pd
 
 # Загрузка данных из первой таблицы
-url_table1 = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSOkW9JzizLG6c1Mg637Cx_HDOD7id5F1b9OlvDK4tQyryWYcLS08yD4j_ezOlF9RAuD1RBcPUw6CXE/pub?gid=588798097&single=true&output=csv'  # Замените на реальный URL
+url_table1 = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSOkW9JzizLG6c1Mg637Cx_HDOD7id5F1b9OlvDK4tQyryWYcLS08yD4j_ezOlF9RAuD1RBcPUw6CXE/pub?gid=588798097&single=true&output=csv'
 df_table1 = pd.read_csv(url_table1)
 
 # Загрузка данных из второй таблицы
-url_table2 = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSOkW9JzizLG6c1Mg637Cx_HDOD7id5F1b9OlvDK4tQyryWYcLS08yD4j_ezOlF9RAuD1RBcPUw6CXE/pub?gid=1666822727&single=true&output=csv'  # Замените на реальный URL
+url_table2 = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSOkW9JzizLG6c1Mg637Cx_HDOD7id5F1b9OlvDK4tQyryWYcLS08yD4j_ezOlF9RAuD1RBcPUw6CXE/pub?gid=1666822727&single=true&output=csv'
 df_table2 = pd.read_csv(url_table2)
 
 # Объединение таблиц по имени исполнителя
