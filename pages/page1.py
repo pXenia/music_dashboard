@@ -4,9 +4,8 @@ import pandas as pd
 import plotly.express as px
 import dash_bootstrap_components as dbc
 import plotly.graph_objects as go
-import numpy as np
 
-dash.register_page(__name__, path="/page1", name="Страница 1")
+dash.register_page(__name__, path="/", name="Страница 1")
 
 # Загрузка данных
 df = pd.read_csv("cleaned_dat.csv")

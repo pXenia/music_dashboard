@@ -21,7 +21,7 @@ app.layout = dbc.Container([
     dbc.Nav([
         dbc.NavLink(
             "Страница 1",
-            href="/page1",
+            href="/",
             id="nav-link-1",
             style={
                 'color': '#242424',
